@@ -1,4 +1,5 @@
 import React from "react";
+import "./App.css";
 import "tachyons";
 
 import CardList from "./CardList";
@@ -25,7 +26,7 @@ class App extends React.Component {
     });
     return (
       <div className="tc">
-        <h1>RoboFriends</h1>
+        <h1 className="f2">RoboFriends</h1>
         <SearchBox
           searchfield={this.state.searchfield}
           searchChange={this.onSearchChange}
