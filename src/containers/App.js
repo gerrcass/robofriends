@@ -7,9 +7,35 @@ import Scroll from "../components/Scroll";
 //import { robots } from "./robots.js";
 import SearchBox from "../components/SearchBox";
 import ErrorBoundry from "../components/ErrorBoundry";
+import Header from "../components/Header";
 
 import { setSearchField, requestRobots } from "../actions";
 
+class App extends React.Component {
+  componentDidMount() {
+    this.props.onRequestRobots();
+  }
+
+  render() {
+    const { searchField, onSearchChange, robots, isPending } = this.props;
+    const filteredRobots = robots.filter((robot) => {
+      return robot.name.toLowerCase().includes(searchField.toLowerCase());
+    });
+    return isPending ? (
+      <h1 className="tc f2">Loading</h1>
+    ) : (
+      <div className="tc">
+        <Header />
+        <SearchBox searchChange={onSearchChange} />
+        <Scroll>
+          <ErrorBoundry>
+            <CardList robots={filteredRobots} />;
+          </ErrorBoundry>
+        </Scroll>
+      </div>
+    );
+  }
+}
 const mapStateToProps = (state) => {
   return {
     searchField: state.searchRobots.searchField,
@@ -27,32 +53,4 @@ const mapDispatchToProps = (dispatch) => {
     onRequestRobots: () => dispatch(requestRobots()),
   };
 };
-
-class App extends React.Component {
-  componentDidMount() {
-    this.props.onRequestRobots();
-  }
-
-  render() {
-    const { searchField, onSearchChange, robots, isPending } = this.props;
-    const filteredRobots = robots.filter((robot) => {
-      return robot.name.toLowerCase().includes(searchField.toLowerCase());
-    });
-
-    return isPending ? (
-      <h1 className="tc f2">Loading</h1>
-    ) : (
-      <div className="tc">
-        <h1 className="f2">RoboFriends</h1>
-        <SearchBox searchChange={onSearchChange} />
-        <Scroll>
-          <ErrorBoundry>
-            <CardList robots={filteredRobots} />;
-          </ErrorBoundry>
-        </Scroll>
-      </div>
-    );
-  }
-}
-
 export default connect(mapStateToProps, mapDispatchToProps)(App);
