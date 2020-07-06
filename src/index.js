@@ -8,6 +8,7 @@ import { searchRobots, requestRobots } from "./reducers.js";
 import "./index.css";
 import App from "./containers/App";
 import "tachyons";
+import * as serviceWorker from "./serviceWorker";
 
 //const logger = createLogger();
 const rootReducer = combineReducers({ searchRobots, requestRobots });
@@ -20,6 +21,11 @@ ReactDOM.render(
   </Provider>,
   document.getElementById("root")
 );
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.register();
+
 /* 
 https://mariosfakiolas.com/blog/my-react-components-render-twice-and-drive-me-crazy/
 This StrictMode intentionally invoking the render() twice (and some other functions)  
